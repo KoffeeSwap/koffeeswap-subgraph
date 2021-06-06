@@ -5,7 +5,8 @@
   "license": "GPL-3.0-or-later",
   "scripts": {
     "codegen": "graph codegen --output-dir src/types/",
-    "build": "graph build"
+    "build": "graph build",
+    "deploy": "graph deploy KoffeeSwap/koffeeswap-subgraph --ipfs https://graph.koffeeswap.exchange/ipfs/ --node https://graph.koffeeswap.exchange/deploy/ --debug"
   },
   "devDependencies": {
     "@graphprotocol/graph-cli": "^0.16.0",
