@@ -27,13 +27,13 @@ export function getKcsPriceInUSD(): BigDecimal {
   //   // dai and USDC have been created
   // } else
   if (usdcPair !== null && usdtPair !== null) {
-    let totalLiquidityKCS = usdcPair.reserve1.plus(usdtPair.reserve1)
-    let usdcWeight = usdcPair.reserve1.div(totalLiquidityKCS)
+    let totalLiquidityKCS = usdcPair.reserve0.plus(usdtPair.reserve1)
+    let usdcWeight = usdcPair.reserve0.div(totalLiquidityKCS)
     let usdtWeight = usdtPair.reserve1.div(totalLiquidityKCS)
-    return usdcPair.token0Price.times(usdcWeight).plus(usdtPair.token0Price.times(usdtWeight))
+    return usdcPair.token1Price.times(usdcWeight).plus(usdtPair.token0Price.times(usdtWeight))
     // usdt is the only pair so far
   } else if (usdcPair !== null) {
-    return usdcPair.token0Price
+    return usdcPair.token1Price
   } else {
     return ZERO_BD
   }
@@ -41,9 +41,9 @@ export function getKcsPriceInUSD(): BigDecimal {
 
 // token where amounts should contribute to tracked volume and liquidity
 let WHITELIST: string[] = [
-  '0xB296bAb2ED122a85977423b602DdF3527582A3DA', // WKCS
-  '0xD6c7E27a598714c2226404Eb054e0c074C906Fc9', // USDC
-  '0x67f6a7BbE0da067A747C6b2bEdF8aBBF7D6f60dc'  // USDT
+  '0xb296bab2ed122a85977423b602ddf3527582a3da', // WKCS
+  '0xd6c7e27a598714c2226404eb054e0c074c906fc9', // USDC
+  '0x67f6a7bbe0da067a747c6b2bedf8abbf7d6f60dc'  // USDT
 ]
 
 // minimum liquidity required to count towards tracked volume for pairs with small # of Lps
