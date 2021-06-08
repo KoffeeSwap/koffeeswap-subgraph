@@ -14,14 +14,14 @@ export function updateKoffeeSwapDayData(event: EthereumEvent): KoffeeSwapDayData
     koffeeSwapDayData = new KoffeeSwapDayData(dayID.toString())
     koffeeSwapDayData.date = dayStartTimestamp
     koffeeSwapDayData.dailyVolumeUSD = ZERO_BD
-    koffeeSwapDayData.dailyVolumeETH = ZERO_BD
+    koffeeSwapDayData.dailyVolumeKCS = ZERO_BD
     koffeeSwapDayData.totalVolumeUSD = ZERO_BD
-    koffeeSwapDayData.totalVolumeETH = ZERO_BD
+    koffeeSwapDayData.totalVolumeKCS = ZERO_BD
     koffeeSwapDayData.dailyVolumeUntracked = ZERO_BD
   }
 
   koffeeSwapDayData.totalLiquidityUSD = koffeeSwap.totalLiquidityUSD
-  koffeeSwapDayData.totalLiquidityETH = koffeeSwap.totalLiquidityETH
+  koffeeSwapDayData.totalLiquidityKCS = koffeeSwap.totalLiquidityKCS
   koffeeSwapDayData.txCount = koffeeSwap.txCount
   koffeeSwapDayData.save()
 
@@ -104,17 +104,17 @@ export function updateTokenDayData(token: Token, event: EthereumEvent): TokenDay
     tokenDayData = new TokenDayData(tokenDayID)
     tokenDayData.date = dayStartTimestamp
     tokenDayData.token = token.id
-    tokenDayData.priceUSD = token.derivedETH.times(bundle.ethPrice)
+    tokenDayData.priceUSD = token.derivedKCS.times(bundle.kcsPrice)
     tokenDayData.dailyVolumeToken = ZERO_BD
-    tokenDayData.dailyVolumeETH = ZERO_BD
+    tokenDayData.dailyVolumeKCS = ZERO_BD
     tokenDayData.dailyVolumeUSD = ZERO_BD
     tokenDayData.dailyTxns = ZERO_BI
     tokenDayData.totalLiquidityUSD = ZERO_BD
   }
-  tokenDayData.priceUSD = token.derivedETH.times(bundle.ethPrice)
+  tokenDayData.priceUSD = token.derivedKCS.times(bundle.kcsPrice)
   tokenDayData.totalLiquidityToken = token.totalLiquidity
-  tokenDayData.totalLiquidityETH = token.totalLiquidity.times(token.derivedETH as BigDecimal)
-  tokenDayData.totalLiquidityUSD = tokenDayData.totalLiquidityETH.times(bundle.ethPrice)
+  tokenDayData.totalLiquidityKCS = token.totalLiquidity.times(token.derivedKCS as BigDecimal)
+  tokenDayData.totalLiquidityUSD = tokenDayData.totalLiquidityKCS.times(bundle.kcsPrice)
   tokenDayData.dailyTxns = tokenDayData.dailyTxns.plus(ONE_BI)
   tokenDayData.save()
 

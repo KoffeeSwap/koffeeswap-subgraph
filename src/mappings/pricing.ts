@@ -3,23 +3,23 @@ import { Pair, Token, Bundle } from '../types/schema'
 import { BigDecimal, Address, BigInt } from '@graphprotocol/graph-ts/index'
 import { ZERO_BD, factoryContract, ADDRESS_ZERO, ONE_BD } from './helpers'
 
-const WKCS_ADDRESS = '0xB296bAb2ED122a85977423b602DdF3527582A3DA'
-const USDC_WETH_PAIR = '0x86C49BA0825fC1F736c67E5D58F49a76018d5e5A'
-//const DAI_WETH_PAIR = '0xa478c2975ab1ea89e8196811f51a7b7ade33eb11'
-const USDT_WETH_PAIR = '0x3975F8E4fbEeF251b58722d8ACe3345fE8995206'
+const WKCS_ADDRESS = '0xb296bab2ed122a85977423b602ddf3527582a3da'
+const USDC_WKCS_PAIR = '0x86c49ba0825fc1f736c67e5d58f49a76018d5e5a'
+//const DAI_WKCS_PAIR = '0xa478c2975ab1ea89e8196811f51a7b7ade33eb11'
+const USDT_WKCS_PAIR = '0x3975f8e4fbeef251b58722d8ace3345fe8995206'
 
-export function getEthPriceInUSD(): BigDecimal {
+export function getKcsPriceInUSD(): BigDecimal {
   // fetch eth prices for each stablecoin
-  //let daiPair = Pair.load(DAI_WETH_PAIR) // dai is token0
-  let usdcPair = Pair.load(USDC_WETH_PAIR) // usdc is token0
-  let usdtPair = Pair.load(USDT_WETH_PAIR) // usdt is token1
+  //let daiPair = Pair.load(DAI_WKCS_PAIR) // dai is token0
+  let usdcPair = Pair.load(USDC_WKCS_PAIR) // usdc is token0
+  let usdtPair = Pair.load(USDT_WKCS_PAIR) // usdt is token1
 
   // all 3 have been created
   // if (daiPair !== null && usdcPair !== null && usdtPair !== null) {
-  //   let totalLiquidityETH = daiPair.reserve1.plus(usdcPair.reserve1).plus(usdtPair.reserve0)
-  //   let daiWeight = daiPair.reserve1.div(totalLiquidityETH)
-  //   let usdcWeight = usdcPair.reserve1.div(totalLiquidityETH)
-  //   let usdtWeight = usdtPair.reserve0.div(totalLiquidityETH)
+  //   let totalLiquidityKCS = daiPair.reserve1.plus(usdcPair.reserve1).plus(usdtPair.reserve0)
+  //   let daiWeight = daiPair.reserve1.div(totalLiquidityKCS)
+  //   let usdcWeight = usdcPair.reserve1.div(totalLiquidityKCS)
+  //   let usdtWeight = usdtPair.reserve0.div(totalLiquidityKCS)
   //   return daiPair.token0Price
   //     .times(daiWeight)
   //     .plus(usdcPair.token0Price.times(usdcWeight))
@@ -27,9 +27,9 @@ export function getEthPriceInUSD(): BigDecimal {
   //   // dai and USDC have been created
   // } else
   if (usdcPair !== null && usdtPair !== null) {
-    let totalLiquidityETH = usdcPair.reserve1.plus(usdtPair.reserve1)
-    let usdcWeight = usdcPair.reserve1.div(totalLiquidityETH)
-    let usdtWeight = usdtPair.reserve1.div(totalLiquidityETH)
+    let totalLiquidityKCS = usdcPair.reserve1.plus(usdtPair.reserve1)
+    let usdcWeight = usdcPair.reserve1.div(totalLiquidityKCS)
+    let usdtWeight = usdtPair.reserve1.div(totalLiquidityKCS)
     return usdcPair.token0Price.times(usdcWeight).plus(usdtPair.token0Price.times(usdtWeight))
     // usdt is the only pair so far
   } else if (usdcPair !== null) {
@@ -50,13 +50,13 @@ let WHITELIST: string[] = [
 let MINIMUM_USD_THRESHOLD_NEW_PAIRS = BigDecimal.fromString('400000')
 
 // minimum liquidity for price to get tracked
-let MINIMUM_LIQUIDITY_THRESHOLD_ETH = BigDecimal.fromString('2')
+let MINIMUM_LIQUIDITY_THRESHOLD_KCS = BigDecimal.fromString('2')
 
 /**
- * Search through graph to find derived Eth per token.
- * @todo update to be derived ETH (add stablecoin estimates)
+ * Search through graph to find derived Kcs per token.
+ * @todo update to be derived KCS (add stablecoin estimates)
  **/
-export function findEthPerToken(token: Token): BigDecimal {
+export function findKcsPerToken(token: Token): BigDecimal {
   if (token.id == WKCS_ADDRESS) {
     return ONE_BD
   }
@@ -65,13 +65,13 @@ export function findEthPerToken(token: Token): BigDecimal {
     let pairAddress = factoryContract.getPair(Address.fromString(token.id), Address.fromString(WHITELIST[i]))
     if (pairAddress.toHexString() != ADDRESS_ZERO) {
       let pair = Pair.load(pairAddress.toHexString())
-      if (pair.token0 == token.id && pair.reserveETH.gt(MINIMUM_LIQUIDITY_THRESHOLD_ETH)) {
+      if (pair.token0 == token.id && pair.reserveKCS.gt(MINIMUM_LIQUIDITY_THRESHOLD_KCS)) {
         let token1 = Token.load(pair.token1)
-        return pair.token1Price.times(token1.derivedETH as BigDecimal) // return token1 per our token * Eth per token 1
+        return pair.token1Price.times(token1.derivedKCS as BigDecimal) // return token1 per our token * Kcs per token 1
       }
-      if (pair.token1 == token.id && pair.reserveETH.gt(MINIMUM_LIQUIDITY_THRESHOLD_ETH)) {
+      if (pair.token1 == token.id && pair.reserveKCS.gt(MINIMUM_LIQUIDITY_THRESHOLD_KCS)) {
         let token0 = Token.load(pair.token0)
-        return pair.token0Price.times(token0.derivedETH as BigDecimal) // return token0 per our token * ETH per token 0
+        return pair.token0Price.times(token0.derivedKCS as BigDecimal) // return token0 per our token * KCS per token 0
       }
     }
   }
@@ -92,8 +92,8 @@ export function getTrackedVolumeUSD(
   pair: Pair
 ): BigDecimal {
   let bundle = Bundle.load('1')
-  let price0 = token0.derivedETH.times(bundle.ethPrice)
-  let price1 = token1.derivedETH.times(bundle.ethPrice)
+  let price0 = token0.derivedKCS.times(bundle.kcsPrice)
+  let price1 = token1.derivedKCS.times(bundle.kcsPrice)
 
   // if less than 5 LPs, require high minimum reserve amount amount or return 0
   if (pair.liquidityProviderCount.lt(BigInt.fromI32(5))) {
@@ -151,8 +151,8 @@ export function getTrackedLiquidityUSD(
   token1: Token
 ): BigDecimal {
   let bundle = Bundle.load('1')
-  let price0 = token0.derivedETH.times(bundle.ethPrice)
-  let price1 = token1.derivedETH.times(bundle.ethPrice)
+  let price0 = token0.derivedKCS.times(bundle.kcsPrice)
+  let price1 = token1.derivedKCS.times(bundle.kcsPrice)
 
   // both are whitelist tokens, take average of both amounts
   if (WHITELIST.includes(token0.id) && WHITELIST.includes(token1.id)) {

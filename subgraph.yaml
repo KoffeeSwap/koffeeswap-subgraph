@@ -1,5 +1,5 @@
 specVersion: 0.0.2
-description: KoffeeSwap is a decentralized protocol for automated token exchange on Ethereum.
+description: KoffeeSwap is a decentralized protocol for automated token exchange on Kucoin Community Chain.
 repository: https://github.com/KoffeeSwap/koffeeswap-subgraph
 schema:
   file: ./schema.graphql

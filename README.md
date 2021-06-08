@@ -22,7 +22,7 @@ Below are a few ways to show how to query the koffeeswap-subgraph for data. The 
 
 #### KoffeeSwapFactory
 
-Contains data across all of KoffeeSwap V2. This entity tracks important things like total liquidity (in ETH and USD, see below), all time volume, transaction count, number of pairs and more.
+Contains data across all of KoffeeSwap V2. This entity tracks important things like total liquidity (in KCS and USD, see below), all time volume, transaction count, number of pairs and more.
 
 #### Token
 
