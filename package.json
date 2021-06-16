@@ -6,10 +6,10 @@
   "scripts": {
     "codegen": "graph codegen --output-dir src/types/",
     "build": "graph build",
-    "create": "graph create --node https://graph.koffeeswap.exchange:8020 koffeeswap/koffeeswap",
-    "deploy": "graph deploy koffeeswap/koffeeswap --ipfs https://graph.koffeeswap.exchange:5001 --node https://graph.koffeeswap.exchange:8020 --debug",
-    "create-testnet": "graph create --node https://graph.test.koffeeswap.exchange:8020 koffeeswap/koffeeswap",
-    "deploy-testnet": "graph deploy koffeeswap/koffeeswap --ipfs https://graph.test.koffeeswap.exchange:5001 --node https://graph.test.koffeeswap.exchange:8020 --debug"
+    "create": "graph create --node http://graph.koffeeswap.exchange:8020 koffeeswap/koffeeswap",
+    "deploy": "graph deploy koffeeswap/koffeeswap --ipfs http://graph.koffeeswap.exchange:5001 --node http://graph.koffeeswap.exchange:8020 --debug",
+    "create-testnet": "graph create --node http://graph.test.koffeeswap.exchange:8020 koffeeswap/koffeeswap",
+    "deploy-testnet": "graph deploy koffeeswap/koffeeswap --ipfs http://graph.test.koffeeswap.exchange:5001 --node http://graph.test.koffeeswap.exchange:8020 --debug",
   },
   "devDependencies": {
     "@graphprotocol/graph-cli": "^0.16.0",
