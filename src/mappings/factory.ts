@@ -89,6 +89,9 @@ export function handleNewPair(event: PairCreated): void {
   pair.liquidityProviderCount = ZERO_BI
   pair.createdAtTimestamp = event.block.timestamp
   pair.createdAtBlockNumber = event.block.number
+  pair.mintTxCount = ZERO_BI
+  pair.burnTxCount = ZERO_BI
+  pair.swapTxCount = ZERO_BI
   pair.txCount = ZERO_BI
   pair.reserve0 = ZERO_BD
   pair.reserve1 = ZERO_BD

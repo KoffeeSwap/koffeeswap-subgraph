@@ -302,6 +302,7 @@ export function handleMint(event: Mint): void {
     .times(bundle.kcsPrice)
 
   // update txn counts
+  pair.mintTxCount = pair.mintTxCount.plus(ONE_BI)
   pair.txCount = pair.txCount.plus(ONE_BI)
   koffeeSwap.txCount = koffeeSwap.txCount.plus(ONE_BI)
 
@@ -362,8 +363,10 @@ export function handleBurn(event: Burn): void {
     .times(bundle.kcsPrice)
 
   // update txn counts
-  koffeeSwap.txCount = koffeeSwap.txCount.plus(ONE_BI)
+  pair.burnTxCount = pair.burnTxCount.plus(ONE_BI)
   pair.txCount = pair.txCount.plus(ONE_BI)
+  koffeeSwap.txCount = koffeeSwap.txCount.plus(ONE_BI)
+
 
   // update global counter and save
   token0.save()
@@ -444,6 +447,7 @@ export function handleSwap(event: Swap): void {
   pair.volumeToken0 = pair.volumeToken0.plus(amount0Total)
   pair.volumeToken1 = pair.volumeToken1.plus(amount1Total)
   pair.untrackedVolumeUSD = pair.untrackedVolumeUSD.plus(derivedAmountUSD)
+  pair.swapTxCount = pair.swapTxCount.plus(ONE_BI)
   pair.txCount = pair.txCount.plus(ONE_BI)
   pair.save()
 

@@ -78,6 +78,9 @@ type Pair @entity {
   volumeToken1: BigDecimal!
   volumeUSD: BigDecimal!
   untrackedVolumeUSD: BigDecimal!
+  swapTxCount: BigInt!
+  mintTxCount: BigInt!
+  burnTxCount: BigInt!
   txCount: BigInt!
 
   # creation stats
