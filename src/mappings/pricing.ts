@@ -3,18 +3,18 @@ import { Pair, Token, Bundle } from '../types/schema'
 import { BigDecimal, Address, BigInt } from '@graphprotocol/graph-ts/index'
 import { ZERO_BD, factoryContract, ADDRESS_ZERO, ONE_BD } from './helpers'
 
-const WKCS_ADDRESS = '0x4446Fc4eb47f2f6586f9fAAb68B3498F86C07521'
-//const USDC_WKCS_PAIR = '0x86c49ba0825fc1f736c67e5d58f49a76018d5e5a'
+const WKCS_ADDRESS = '0x4446fc4eb47f2f6586f9faab68b3498f86c07521'
+const USDC_WKCS_PAIR = '0xfa1a0a33b15165b814bc6cae44e1dd466471b116'
 //const DAI_WKCS_PAIR = '0xa478c2975ab1ea89e8196811f51a7b7ade33eb11'
-//const USDT_WKCS_PAIR = '0x3975f8e4fbeef251b58722d8ace3345fe8995206'
+const USDT_WKCS_PAIR = '0xd47dd27ba94b3c00058e2184cc5f4bd34ba5f077'
 
 export function getKcsPriceInUSD(): BigDecimal {
-  // fetch eth prices for each stablecoin
+  //fetch eth prices for each stablecoin
   //let daiPair = Pair.load(DAI_WKCS_PAIR) // dai is token0
-  //let usdcPair = Pair.load(USDC_WKCS_PAIR) // usdc is token0
-  //let usdtPair = Pair.load(USDT_WKCS_PAIR) // usdt is token1
+  let usdcPair = Pair.load(USDC_WKCS_PAIR) // usdc is token1
+  let usdtPair = Pair.load(USDT_WKCS_PAIR) // usdt is token0
 
-  // all 3 have been created
+  //all 3 have been created
   // if (daiPair !== null && usdcPair !== null && usdtPair !== null) {
   //   let totalLiquidityKCS = daiPair.reserve1.plus(usdcPair.reserve1).plus(usdtPair.reserve0)
   //   let daiWeight = daiPair.reserve1.div(totalLiquidityKCS)
@@ -24,26 +24,26 @@ export function getKcsPriceInUSD(): BigDecimal {
   //     .times(daiWeight)
   //     .plus(usdcPair.token0Price.times(usdcWeight))
   //     .plus(usdtPair.token1Price.times(usdtWeight))
-  //   // dai and USDC have been created
+  //   // USDT and USDC have been created
   // } else
-  // if (usdcPair !== null && usdtPair !== null) {
-  //   let totalLiquidityKCS = usdcPair.reserve0.plus(usdtPair.reserve1)
-  //   let usdcWeight = usdcPair.reserve0.div(totalLiquidityKCS)
-  //   let usdtWeight = usdtPair.reserve1.div(totalLiquidityKCS)
-  //   return usdcPair.token1Price.times(usdcWeight).plus(usdtPair.token0Price.times(usdtWeight))
-  //   // usdt is the only pair so far
-  // } else if (usdcPair !== null) {
-  //   return usdcPair.token1Price
-  // } else {
+  if (usdcPair !== null && usdtPair !== null) {
+    let totalLiquidityKCS = usdcPair.reserve0.plus(usdtPair.reserve1)
+    let usdcWeight = usdcPair.reserve0.div(totalLiquidityKCS)
+    let usdtWeight = usdtPair.reserve1.div(totalLiquidityKCS)
+    return usdcPair.token1Price.times(usdcWeight).plus(usdtPair.token0Price.times(usdtWeight))
+    // usdt is the only pair so far
+  } else if (usdcPair !== null) {
+    return usdcPair.token1Price
+  } else {
     return ZERO_BD
-  //}
+  }
 }
 
 // token where amounts should contribute to tracked volume and liquidity
 let WHITELIST: string[] = [
   '0x4446Fc4eb47f2f6586f9fAAb68B3498F86C07521', // WKCS
-  //'0xd6c7e27a598714c2226404eb054e0c074c906fc9', // USDC
-  //'0x67f6a7bbe0da067a747c6b2bedf8abbf7d6f60dc'  // USDT
+  '0x980a5afef3d17ad98635f6c5aebcbaeded3c3430', // USDC
+  '0x0039f574ee5cc39bdd162e9a88e3eb1f111baf48'  // USDT
 ]
 
 // minimum liquidity required to count towards tracked volume for pairs with small # of Lps
