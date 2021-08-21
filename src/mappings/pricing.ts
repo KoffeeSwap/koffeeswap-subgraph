@@ -41,7 +41,7 @@ export function getKcsPriceInUSD(): BigDecimal {
 
 // token where amounts should contribute to tracked volume and liquidity
 let WHITELIST: string[] = [
-  '0x4446Fc4eb47f2f6586f9fAAb68B3498F86C07521', // WKCS
+  '0x4446fc4eb47f2f6586f9faab68b3498f86c07521', // WKCS
   '0x980a5afef3d17ad98635f6c5aebcbaeded3c3430', // USDC
   '0x0039f574ee5cc39bdd162e9a88e3eb1f111baf48'  // USDT
 ]
